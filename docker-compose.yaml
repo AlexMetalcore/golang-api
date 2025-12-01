@@ -1,0 +1,14 @@
+version: "3.7"
+
+networks:
+  default:
+    name: api
+    external: true
+
+services:
+  golang-api:
+    command: [ "sh","-c","sleep infinity" ]
+
+  postgres-api:
+    image: postgres:16
+    container_name: postgres-api
