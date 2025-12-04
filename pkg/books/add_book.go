@@ -2,8 +2,9 @@ package books
 
 import (
 	"api/pkg/common/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type AddBookRequestBody struct {
@@ -16,7 +17,7 @@ func (h handler) AddBook(c *gin.Context) {
 	body := AddBookRequestBody{}
 
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		_ = c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
@@ -27,7 +28,7 @@ func (h handler) AddBook(c *gin.Context) {
 	book.Description = body.Description
 
 	if result := h.DB.Create(&book); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
+		_ = c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 

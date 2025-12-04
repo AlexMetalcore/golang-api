@@ -8,8 +8,7 @@ type Config struct {
 }
 
 func LoadConfig() (c Config, err error) {
-	viper.AddConfigPath("./pkg/common/config/envs")
-	viper.SetConfigName("dev")
+	viper.SetConfigFile("./pkg/common/envs/.env")
 	viper.SetConfigType("env")
 
 	viper.AutomaticEnv()
@@ -22,5 +21,8 @@ func LoadConfig() (c Config, err error) {
 
 	err = viper.Unmarshal(&c)
 
-	return
+	c.Port = viper.GetString("PORT")
+	c.DBUrl = viper.GetString("DB_URL")
+
+	return c, nil
 }

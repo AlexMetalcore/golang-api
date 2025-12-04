@@ -2,8 +2,9 @@ package books
 
 import (
 	"api/pkg/common/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (h handler) DeleteBook(c *gin.Context) {
@@ -12,7 +13,7 @@ func (h handler) DeleteBook(c *gin.Context) {
 	var book models.Book
 
 	if result := h.DB.First(&book, id); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
+		_ = c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 

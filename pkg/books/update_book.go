@@ -2,8 +2,9 @@ package books
 
 import (
 	"api/pkg/common/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type UpdateBookRequestBody struct {
@@ -18,14 +19,14 @@ func (h handler) UpdateBook(c *gin.Context) {
 
 	// получаем тело запроса
 	if err := c.BindJSON(&body); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		_ = c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
 	var book models.Book
 
 	if result := h.DB.First(&book, id); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
+		_ = c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 

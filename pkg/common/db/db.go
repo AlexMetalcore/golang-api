@@ -2,9 +2,10 @@ package db
 
 import (
 	"api/pkg/common/models"
+	"log"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
 )
 
 func Init(url string) *gorm.DB {
@@ -14,7 +15,7 @@ func Init(url string) *gorm.DB {
 		log.Fatalln(err)
 	}
 
-	db.AutoMigrate(&models.Book{})
+	_ = db.AutoMigrate(&models.Book{})
 
 	return db
 }
