@@ -3,3 +3,5 @@ pkg/common/envs/.env
 docker-compose.override.yaml
 pkg/mod
 pkg/sumdb
+
+__debug*

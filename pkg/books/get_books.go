@@ -10,7 +10,7 @@ import (
 func (h handler) GetBooks(c *gin.Context) {
 	var books []models.Book
 
-	if result := h.DB.Find(&books); result.Error != nil {
+	if result := h.DB.Order("ID DESC").Find(&books); result.Error != nil {
 		_ = c.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
