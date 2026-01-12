@@ -24,10 +24,21 @@ func (h handler) AddBook(c *gin.Context) {
 
 	var book models.Book
 
-	book.Title = body.Title
-	book.Author = body.Author
-	book.Description = body.Description
-	book.AdditionalData = body.AdditionalData
+	if len(body.Title) > 0 {
+		book.Title = body.Title
+	}
+
+	if len(body.Author) > 0 {
+		book.Author = body.Author
+	}
+
+	if len(body.Description) > 0 {
+		book.Description = body.Description
+	}
+
+	if len(body.AdditionalData) > 0 {
+		book.AdditionalData = body.AdditionalData
+	}
 
 	if result := h.DB.Create(&book); result.Error != nil {
 		_ = c.AbortWithError(http.StatusNotFound, result.Error)

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql/driver"
 	"errors"
 
 	"encoding/json"
@@ -15,7 +16,11 @@ type Book struct {
 	Title          string `json:"title"`
 	Author         string `json:"author"`
 	Description    string `json:"description"`
-	AdditionalData JSONB  `Gorm:"type:jsonb;serializer:json" json:"additional_data"`
+	AdditionalData JSONB  `gorm:"type:jsonb;serializer:json" json:"additional_data"`
+}
+
+func (jsonField JSONB) Value() (driver.Value, error) {
+	return json.Marshal(jsonField)
 }
 
 func (jsonField *JSONB) Scan(value interface{}) error {
