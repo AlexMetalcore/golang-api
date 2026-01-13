@@ -18,7 +18,10 @@ func main() {
 	r := gin.Default()
 	h := db.Init(c.DBUrl)
 
-	books.RegisterRoutes(r, h)
+	books.RegisterRoutes(r, h, c)
 
-	_ = r.Run(c.Port)
+	err = r.Run(c.Port)
+	if err != nil {
+		return
+	}
 }

@@ -7,6 +7,12 @@ import (
 type Config struct {
 	Port  string `mapstructure:"PORT"`
 	DBUrl string `mapstructure:"DB_URL"`
+	Auth  Auth
+}
+
+type Auth struct {
+	Name     string `mapstructure:"USER_NAME"`
+	Password string `mapstructure:"PASSWORD"`
 }
 
 func LoadConfig() (c Config, err error) {
@@ -25,6 +31,11 @@ func LoadConfig() (c Config, err error) {
 
 	c.Port = viper.GetString("PORT")
 	c.DBUrl = viper.GetString("DB_URL")
+
+	c.Auth = Auth{
+		Name:     viper.GetString("USER_NAME"),
+		Password: viper.GetString("PASSWORD"),
+	}
 
 	return c, nil
 }
