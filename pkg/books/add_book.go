@@ -14,11 +14,11 @@ type AddBookRequestBody struct {
 	AdditionalData models.JSONB `Gorm:"type:jsonb;serializer:json" json:"additional_data"`
 }
 
-func (h handler) AddBook(c *gin.Context) {
+func (handlerInit handler) AddBook(context *gin.Context) {
 	body := AddBookRequestBody{}
 
-	if err := c.BindJSON(&body); err != nil {
-		_ = c.AbortWithError(http.StatusBadRequest, err)
+	if err := context.BindJSON(&body); err != nil {
+		_ = context.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
@@ -40,10 +40,10 @@ func (h handler) AddBook(c *gin.Context) {
 		book.AdditionalData = body.AdditionalData
 	}
 
-	if result := h.DB.Create(&book); result.Error != nil {
-		_ = c.AbortWithError(http.StatusNotFound, result.Error)
+	if result := handlerInit.DB.Create(&book); result.Error != nil {
+		_ = context.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 
-	c.JSON(http.StatusCreated, &book)
+	context.JSON(http.StatusCreated, &book)
 }

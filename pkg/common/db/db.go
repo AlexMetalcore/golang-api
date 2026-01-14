@@ -15,7 +15,10 @@ func Init(url string) *gorm.DB {
 		log.Fatalln(err)
 	}
 
-	_ = db.AutoMigrate(&models.Book{})
+	err = db.AutoMigrate(&models.Book{})
+	if err != nil {
+		return nil
+	}
 
 	return db
 }

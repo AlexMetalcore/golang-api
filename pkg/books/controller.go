@@ -11,18 +11,20 @@ type handler struct {
 	DB *gorm.DB
 }
 
-func RegisterRoutes(r *gin.Engine, db *gorm.DB, c config.Config) {
-	h := &handler{
+func RegisterRoutes(router *gin.Engine, db *gorm.DB, loadConfig config.Config) {
+	handlerInit := &handler{
 		DB: db,
 	}
 
-	routes := r.Group("/books", gin.BasicAuth(gin.Accounts{
-		c.Auth.Name: c.Auth.Password,
+	routes := router.Group("/books", gin.BasicAuth(gin.Accounts{
+		loadConfig.Auth.Name: loadConfig.Auth.Password,
 	}))
 
-	routes.POST("/", h.AddBook)
-	routes.GET("/", h.GetBooks)
-	routes.GET("/:id", h.GetBook)
-	routes.PUT("/:id", h.UpdateBook)
-	routes.DELETE("/:id", h.DeleteBook)
+	routes.POST("/", handlerInit.AddBook)
+	routes.GET("/:id", handlerInit.GetBook)
+	routes.PUT("/:id", handlerInit.UpdateBook)
+	routes.DELETE("/:id", handlerInit.DeleteBook)
+
+	allBooks := router.Group("/books")
+	allBooks.GET("/", handlerInit.GetBooks)
 }

@@ -14,19 +14,19 @@ type UpdateBookRequestBody struct {
 	AdditionalData models.JSONB `Gorm:"type:jsonb;serializer:json" json:"additional_data"`
 }
 
-func (h handler) UpdateBook(c *gin.Context) {
-	id := c.Param("id")
+func (handlerInit handler) UpdateBook(context *gin.Context) {
+	id := context.Param("id")
 	body := UpdateBookRequestBody{}
 
-	if err := c.BindJSON(&body); err != nil {
-		_ = c.AbortWithError(http.StatusBadRequest, err)
+	if err := context.BindJSON(&body); err != nil {
+		_ = context.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
 	var book models.Book
 
-	if result := h.DB.First(&book, id); result.Error != nil {
-		_ = c.AbortWithError(http.StatusNotFound, result.Error)
+	if result := handlerInit.DB.First(&book, id); result.Error != nil {
+		_ = context.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 
@@ -46,7 +46,7 @@ func (h handler) UpdateBook(c *gin.Context) {
 		book.AdditionalData = body.AdditionalData
 	}
 
-	h.DB.Save(&book)
+	handlerInit.DB.Save(&book)
 
-	c.JSON(http.StatusOK, &book)
+	context.JSON(http.StatusOK, &book)
 }

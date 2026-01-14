@@ -7,15 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h handler) GetBook(c *gin.Context) {
-	id := c.Param("id")
+func (handlerInit handler) GetBook(context *gin.Context) {
+	id := context.Param("id")
 
 	var book models.Book
 
-	if result := h.DB.First(&book, id); result.Error != nil {
-		_ = c.AbortWithError(http.StatusBadRequest, result.Error)
+	if result := handlerInit.DB.First(&book, id); result.Error != nil {
+		_ = context.AbortWithError(http.StatusBadRequest, result.Error)
 		return
 	}
 
-	c.JSON(http.StatusOK, &book)
+	context.JSON(http.StatusOK, &book)
 }

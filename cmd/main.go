@@ -10,17 +10,19 @@ import (
 )
 
 func main() {
-	c, err := config.LoadConfig()
+	loadConfig, err := config.LoadConfig()
+
 	if err != nil {
 		log.Fatalf("failed to load config: %v", err)
 	}
 
-	r := gin.Default()
-	h := db.Init(c.DBUrl)
+	router := gin.Default()
+	dbInit := db.Init(loadConfig.DBUrl)
 
-	books.RegisterRoutes(r, h, c)
+	books.RegisterRoutes(router, dbInit, loadConfig)
 
-	err = r.Run(c.Port)
+	err = router.Run(loadConfig.Port)
+
 	if err != nil {
 		return
 	}

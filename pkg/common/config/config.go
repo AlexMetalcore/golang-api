@@ -15,7 +15,7 @@ type Auth struct {
 	Password string `mapstructure:"PASSWORD"`
 }
 
-func LoadConfig() (c Config, err error) {
+func LoadConfig() (config Config, err error) {
 	viper.SetConfigFile("./pkg/common/envs/.env")
 	viper.SetConfigType("env")
 
@@ -27,15 +27,15 @@ func LoadConfig() (c Config, err error) {
 		return
 	}
 
-	err = viper.Unmarshal(&c)
+	err = viper.Unmarshal(&config)
 
-	c.Port = viper.GetString("PORT")
-	c.DBUrl = viper.GetString("DB_URL")
+	config.Port = viper.GetString("PORT")
+	config.DBUrl = viper.GetString("DB_URL")
 
-	c.Auth = Auth{
+	config.Auth = Auth{
 		Name:     viper.GetString("USER_NAME"),
 		Password: viper.GetString("PASSWORD"),
 	}
 
-	return c, nil
+	return config, nil
 }

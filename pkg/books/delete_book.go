@@ -7,17 +7,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h handler) DeleteBook(c *gin.Context) {
-	id := c.Param("id")
+func (handlerInit handler) DeleteBook(context *gin.Context) {
+	id := context.Param("id")
 
 	var book models.Book
 
-	if result := h.DB.First(&book, id); result.Error != nil {
-		_ = c.AbortWithError(http.StatusNotFound, result.Error)
+	if result := handlerInit.DB.First(&book, id); result.Error != nil {
+		_ = context.AbortWithError(http.StatusNotFound, result.Error)
 		return
 	}
 
-	h.DB.Delete(&book)
+	handlerInit.DB.Delete(&book)
 
-	c.Status(http.StatusOK)
+	context.Status(http.StatusOK)
 }
